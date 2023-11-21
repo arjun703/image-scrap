@@ -1,8 +1,8 @@
 const fs = require('fs');
 
 // Specify the paths to the input and output JSON files
-const inputFilePath = 'username-image3.json';
-const outputFilePath = 'abc-organized.json';
+const inputFilePath = 'username-imagerem.json';
+const outputFilePath = 'organized-rem.json';
 
 // Read the content of the input JSON file
 fs.readFile(inputFilePath, 'utf8', (err, data) => {

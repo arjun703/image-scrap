@@ -86,7 +86,6 @@ async function processExcel(filePath) {
 
   let processedLink = 0;
 
-
   let ogaanImages = 0;
 
   for (const row of data) {
@@ -94,9 +93,13 @@ async function processExcel(filePath) {
     const link = row['MAIN STORE LINK']; // Adjust the column name accordingly
     // console.log("MAIN LINK: ", link);
 
+    if(!link.includes('modelsntrends')) continue
 
-    if(!link.includes('ensembleindia')) continue
+    ogaanImages++
 
+    console.log('modelntrends', ogaanImages)
+
+    continue
 
     const imageUrls = await fetchHTML(link);
 
@@ -136,7 +139,7 @@ async function processExcel(filePath) {
   const csv = json2csv(jsonData, { fields });
 
   // Write the CSV to a file
-  fs.writeFileSync('op-all-ensembleindia.csv', csv, 'utf8');
+  fs.writeFileSync('op-all-modelsntrends.csv', csv, 'utf8');
 
   console.log('CSV file has been saved');
 

@@ -1,11 +1,13 @@
 
 
 
+
+
 const { ApifyClient } = require('apify-client');
 
 // Initialize the ApifyClient with API token
 const client = new ApifyClient({
-    token: 'apify_api_up775cCWg3XtNKoj63PqQ490Bk4haJ0dS2ex',
+    token: 'apify_api_52U7nv3sP2pX8fQZJIXI8uJTPwhgdc3YEqLj',
 });
 
 
@@ -13,7 +15,7 @@ const client = new ApifyClient({
 const fs = require('fs');
 
 // Read the content of the JSON file
-fs.readFile('insta-usernames.json', 'utf8', (err, data) => {
+fs.readFile('not-existing-username.json', 'utf8', (err, data) => {
   if (err) {
     console.error('Error reading the file:', err);
     return;
@@ -39,12 +41,12 @@ fs.readFile('insta-usernames.json', 'utf8', (err, data) => {
 	}
 
 	// Specify the size of each subgroup
-	const subgroupSize = 100;
+	const subgroupSize = 500;
 
 	// Divide the original array into subgroups
 	let subgroups = divideArrayIntoGroups(originalArray, subgroupSize);
 
-	subgroups = subgroups.slice(3, 4)
+	subgroups = subgroups.slice(0,1)
 
 	// Print the subgroups
 	subgroups.forEach((subgroup, index) => {
@@ -64,8 +66,6 @@ fs.readFile('insta-usernames.json', 'utf8', (err, data) => {
 		    
 		    const { items } = await client.dataset(run.defaultDatasetId).listItems();
 
-
-
 			items.forEach(item => {
 
 
@@ -83,7 +83,7 @@ fs.readFile('insta-usernames.json', 'utf8', (err, data) => {
 					console.log(jsonString)
 
 					// Specify the file path
-					const filePath = 'username-image4.json';
+					const filePath = 'username-imagerem.json';
 
 					// Append the JSON string to the file
 					fs.appendFile(filePath, jsonString + '\n', 'utf8', (err) => {
