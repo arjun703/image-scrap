@@ -4,77 +4,18 @@ const fs = require('fs');
 const XLSX = require('xlsx');
 const cheerio = require('cheerio');
 
-async function fetchHTML(url) {
-  try {
-
-
-
-    let count = 0;
-
-    let maxCount = 3;
-
-    let maxImages = 6;
-
-    let imageCount = 0;
-
-    while (count < maxCount && imageCount < maxImages ) {
-      // Scroll down to trigger lazy loading
-      // Scroll down to trigger lazy loading
-
-      // Count the number of images found
-      imageCount = await page.evaluate(() => {
-        return document.querySelectorAll('.img-slot img').length;
-      });
-
-      if(imageCount < 6){
-
-
-
-        count++;
-
-        // Scroll down to trigger lazy loading
-        await page.evaluate(async () => {
-          window.scrollBy(0, 100);
-        });
-
-        // Wait for a short period, allowing images to load
-        await page.waitForTimeout(1000); // Adjust this time based on the website's behavior
-
-
-      }
-
-      // console.log(`Found ${imageCount} images after scrolling.`);
-
-      // If you want to limit the number of scrolls, you can add a condition here
-    }
-
-  let imageURLs  = [];
-
-     imageURLs = await page.evaluate(() => {
-        return Array.from(document.querySelectorAll('.img-slot img')).map(imgNode => imgNode.getAttribute('src'));
-      });
-
-
-    await browser.close();
-    return imageURLs;
-  } catch (error) {
-    console.error(`Error fetching HTML from ${url}: ${error.message}`);
-    return null;
-  }
-}
-
 
 async function processExcel(filePath) {
 
-  console.log("hello")
+  // console.log("hello")
 
-  const workbook = XLSX.readFile(filePath);
+  // const workbook = XLSX.readFile(filePath);
 
-  const sheetName = workbook.SheetNames[0];
+  // const sheetName = workbook.SheetNames[0];
 
-  const sheet = workbook.Sheets[sheetName];
+  // const sheet = workbook.Sheets[sheetName];
 
-  const data = XLSX.utils.sheet_to_json(sheet, { defval: '' });
+  // const data = XLSX.utils.sheet_to_json(sheet, { defval: '' });
 
   const resultsForStoreAndOnlyPerniaspopupshop = [];
 
@@ -90,21 +31,24 @@ const launchOptions = {
     
     await page.setViewport({width: 4080, height: 1024});
 
+    const rems = JSON.parse(fs.readFileSync('./op-all-empty-cats.json', 'utf-8'));
 
-  for (const row of data) {
+  for (const row of rems) {
 
-    const link = row['MAIN STORE LINK']; // Adjust the column name accordingly
+    // const link = row['MAIN STORE LINK']; // Adjust the column name accordingly
     // console.log("MAIN LINK: ", link);
 
-    if(!link.includes('popupshop')) continue
+    // if(!link.includes('popupshop')) continue
 
-    if(link.trim().length == 0) continue
+    // if(link.trim().length == 0) continue
+
+    link = row
 
     try {
 
       // const browser = await puppeteer.launch({ headless: false });
-       await page.goto(link);
-        await page.waitFor('#CheckboxListOptions-category_product');
+       // await page.goto(link);
+        await page.goto(link, { waitUntil: 'load' });
 
         categories = ''
           // Count the number of images found
@@ -161,7 +105,7 @@ const launchOptions = {
   const csv = json2csv(jsonData, { fields });
 
   // Write the CSV to a file
-  fs.writeFileSync('op-all-popup.csv', csv, 'utf8');
+  fs.writeFileSync('op-all-popup-rem.csv', csv, 'utf8');
 
   console.log('CSV file has been saved');
 

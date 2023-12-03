@@ -1,13 +1,8 @@
-
-
-
-
-
 const { ApifyClient } = require('apify-client');
 
 // Initialize the ApifyClient with API token
 const client = new ApifyClient({
-    token: 'apify_api_bfTwHZBVtqEy5hs2oRaiZ14VPiTbu40nmkDv',
+    token: 'apify_api_kFCAhL1MHMq9hMCTCknXpkZkDZ4S1c081yEj',
 });
 
 
@@ -29,7 +24,6 @@ fs.readFile('insta-usernames.json', 'utf8', (err, data) => {
     console.log('Count of Usernames:', usernames.length);
 
     const originalArray = usernames;
-
 
 	// Function to divide the array into subgroups of a specified size (e.g., 10)
 	function divideArrayIntoGroups(array, groupSize) {
@@ -67,7 +61,6 @@ fs.readFile('insta-usernames.json', 'utf8', (err, data) => {
 		    const { items } = await client.dataset(run.defaultDatasetId).listItems();
 
 			items.forEach(item => {
-
 
 				const imageData = {};
 
@@ -111,8 +104,6 @@ fs.readFile('insta-usernames.json', 'utf8', (err, data) => {
 
 
 	});
-
-
 
   } catch (error) {
     console.error('Error parsing JSON:', error);

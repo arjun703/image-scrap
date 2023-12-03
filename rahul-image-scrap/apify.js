@@ -1,13 +1,8 @@
-
-
-
-
-
 const { ApifyClient } = require('apify-client');
 
 // Initialize the ApifyClient with API token
 const client = new ApifyClient({
-    token: 'apify_api_sjKnTBuIHK3yFSG1XQIHoRZEhKhKE02ePK84',
+    token: 'apify_api_UafsI7OSfOPjnsxcid6gikB9uTzXJE3Gngd2',
 });
 
 
@@ -29,7 +24,6 @@ fs.readFile('insta-usernames.json', 'utf8', (err, data) => {
     console.log('Count of Usernames:', usernames.length);
 
     const originalArray = usernames;
-
 
 	// Function to divide the array into subgroups of a specified size (e.g., 10)
 	function divideArrayIntoGroups(array, groupSize) {
