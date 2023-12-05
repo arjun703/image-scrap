@@ -11,7 +11,7 @@ async function fetchLabourers(filePath) {
     timeout: 7000, // Set the timeout to 7 seconds
   };
 
-  const links = JSON.parse(fs.readFileSync('op/india-links.json', 'utf-8'));
+  const links = JSON.parse(fs.readFileSync('op/java-links.json', 'utf-8'));
 
   const browser = await puppeteer.launch(launchOptions);
 
@@ -78,8 +78,8 @@ async function fetchLabourers(filePath) {
   const csv = json2csv(newArray, { fields });
 
   // Write the CSV to a file
-  fs.writeFileSync('./op/india-labourers.csv', csv, 'utf8');
-  fs.writeFileSync('./op/erroneous-india-labourers.json', JSON.stringify(erroneous), 'utf8');
+  fs.writeFileSync('./op/java-labourers.csv', csv, 'utf8');
+  fs.writeFileSync('./op/erroneous-java-labourers.json', JSON.stringify(erroneous), 'utf8');
 
   console.log('CSV file has been saved');
 }

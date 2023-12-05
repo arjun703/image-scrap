@@ -53,14 +53,14 @@ const clickNextButton = async (page) => {
 
 // Function to save data to a JSON file
 const saveToJson = (data) => {
-    fs.writeFileSync('./op/india-links.json', JSON.stringify(data, null, 2));
+    fs.writeFileSync('./op/java-links.json', JSON.stringify(data, null, 2));
 };
 
 (async () => {
     const browser = await puppeteer.launch({ headless: false });
     const page = await browser.newPage();
 
-    const url = 'https://www.nationaalarchief.nl/onderzoeken/index/nt00345?activeTab=nt&sortering=prs_achternaam&volgorde=asc'
+    const url = 'https://www.nationaalarchief.nl/onderzoeken/index/nt00346?activeTab=nt&sortering=prs_volledigenaam&volgorde=asc'
     await page.setViewport({ width: 1200, height: 800 });
 
     // Replace 'your_url_here' with the starting URL
