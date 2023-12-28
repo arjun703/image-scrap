@@ -1,0 +1,154 @@
+const puppeteer = require('puppeteer');
+const fs = require('fs');
+const json2csv = require('json2csv').parse;
+
+async function fetchPartners(filePath) {
+  const allPartners = [];
+  let processedLink = 0;
+
+  const launchOptions = {
+    headless: true,
+    timeout: 7000, // Set the timeout to 7 seconds
+  };
+
+  let links = JSON.parse(fs.readFileSync('op/partners-links-optimized.json', 'utf-8'));
+
+  const browser = await puppeteer.launch(launchOptions);
+
+  // links = links.slice(0, 2000);
+  // links = links.slice(2000, 4000);
+  // links = links.slice(4000, 6000);
+  // links = links.slice(6000, 8000);
+  links = links.slice(8000, 11000);
+
+  const erroneous = [];
+
+  // Process links in batches of 20
+  const batchSize = 50;
+
+  for (let i = 0; i < links.length; i += batchSize) {
+  
+    const batchLinks = links.slice(i, i + batchSize);
+
+    const promises = batchLinks.map(async (link) => {
+      try {
+
+
+        const page = await browser.newPage();
+
+        await page.setViewport({ width: 1280, height: 1024 });
+
+        await page.goto(link, { waitUntil: 'networkidle0' });
+
+        const partnerInfo = await page.evaluate( async () =>  {
+             
+            const partnerInfo2 = {}
+
+            partnerInfo2['Link'] = window.location.href
+          // Extract partner name
+          const partnerNameElement = document.querySelector('h1[data-test-id="title"]');
+          partnerInfo2['Partner Name'] = partnerNameElement ? partnerNameElement.innerText : 'NA';
+
+          // Extract Products
+          const productsElement = document.querySelector('span[data-test-id="contact-detail-products-data"]');
+          partnerInfo2['Products'] = productsElement ? productsElement.innerText : 'NA';
+
+
+          // Extract Supported Languages
+          const languagesElement = document.querySelector('span[data-test-id="contact-detail-languages-data"]');
+          partnerInfo2['Supported Languages'] = languagesElement ? languagesElement.innerText : 'NA';
+
+          // Extract Countries
+          const countriesElement = document.querySelector('span[data-test-id="contact-detail-country-data"]');
+          partnerInfo2['Countries'] = countriesElement ? countriesElement.innerText : 'NA';
+
+          // Extract Specialization
+          const specializationElement = document.querySelector('p[data-test-id="specializations-data"]');
+          partnerInfo2['Specialization'] = specializationElement ? specializationElement.innerText : 'NA';
+
+
+
+          const addressElement = document.querySelector('a[aria-label="Partner address"]');
+          if (addressElement) {
+            partnerInfo2['Address'] = addressElement.href;
+          } else {
+            partnerInfo2['Address'] = 'NA';
+          }
+
+          const phoneElement = document.querySelector('a[aria-label="Partner phone number"]');
+          if (phoneElement) {
+            partnerInfo2['Phone Number'] = phoneElement.href;
+          } else {
+            partnerInfo2['Phone Number'] = 'NA';
+          }
+
+          const emailElement = document.querySelector('a[aria-label="Partner email address"]');
+          if (emailElement) {
+            partnerInfo2['Email'] = emailElement.href;
+          } else {
+            partnerInfo2['Email'] = 'NA';
+          }
+
+          const websiteElement = document.querySelector('a.detail-links[aria-label="Partner website"]');
+          if (websiteElement) {
+            partnerInfo2['Website'] = websiteElement.href;
+          } else {
+            partnerInfo2['Website'] = 'NA';
+          }
+
+          return partnerInfo2;
+        });
+
+        processedLink++;
+    
+        console.log(`Parnters: ${allPartners.length}`);
+    
+        allPartners.push(partnerInfo);
+    
+        await page.close();
+
+      } catch (error) {
+    
+        erroneous.push(link)
+    
+        console.error(`Error fetching HTML from ${link}: ${error.message}`);
+    
+      }
+    
+    });
+
+    await Promise.all(promises);
+  }
+
+  await browser.close();
+
+  // Step 1: Extract all unique keys
+  const allKeys = Array.from(new Set(allPartners.flatMap(obj => Object.keys(obj))));
+
+  // Step 2: Create a new array with all keys present in each object
+  const newArray = allPartners.map(obj => {
+    const newObj = {};
+    allKeys.forEach(key => {
+      newObj[key] = obj[key] || ''; // Use empty string if the key doesn't exist in the original object
+    });
+    return newObj;
+  });
+
+  // Find the object with the greatest number of keys
+  const maxKeysObject = newArray.reduce((prev, current) => (Object.keys(current).length > Object.keys(prev).length) ? current : prev, {});
+
+  // Extract keys from the object with the greatest number of keys
+  const fields = Object.keys(maxKeysObject);
+
+  // Convert JSON to CSV
+  const csv = json2csv(newArray, { fields });
+
+  // Write the CSV to a file
+  fs.writeFileSync('./op/all-partners-5.csv', csv, 'utf8');
+  fs.writeFileSync('./op/all-erroneous-partners-5.json', JSON.stringify(erroneous), 'utf8');
+
+  console.log('CSV file has been saved');
+}
+
+// Call the function
+fetchPartners();

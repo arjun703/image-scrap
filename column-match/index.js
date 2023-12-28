@@ -33,8 +33,8 @@ function findMismatchedColumns(file1Columns, file2Columns) {
 }
 
 // File paths
-const filePath1 = 'merlin.xlsx';
-const filePath2 = 'merlin-test.csv';
+const filePath1 = 'java-labourers.csv';
+const filePath2 = 'java-labourers-2.csv';
 
 // Read column names from Excel files
 const columnNames1 = getColumnNames(filePath1);

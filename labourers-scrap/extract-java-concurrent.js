@@ -8,17 +8,19 @@ async function fetchLabourers(filePath) {
 
   const launchOptions = {
     headless: true,
-    timeout: 7000, // Set the timeout to 7 seconds
+    timeout: 0, // Set the timeout to 7 seconds
   };
 
-  const links = JSON.parse(fs.readFileSync('op/java-links.json', 'utf-8'));
+  let links = JSON.parse(fs.readFileSync('op/java-links.json', 'utf-8'));
 
   const browser = await puppeteer.launch(launchOptions);
 
   const erroneous = [];
 
+  links = links.slice(0, 15000);
+
   // Process links in batches of 20
-  const batchSize = 50;
+  const batchSize = 40;
   for (let i = 0; i < links.length; i += batchSize) {
     const batchLinks = links.slice(i, i + batchSize);
 

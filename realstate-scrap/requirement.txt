@@ -1,0 +1,16 @@
+Required to scrap data from : https://www.realestate.com.au/
+
+There are 7 states in Australia and I need data of all states.
+
+New South Wales
+Queensland
+South Australia
+Tasmania
+Victoria
+Western Australia
+Australian Capital Territory
+Northern Territory
+
+Please check the excel template and I need all data to be scraped in excel and need a tool with script so If there is any update in the future then I can run by myself.
+
+I also need separate one sheet for Brisbane city as link is mentioned below. Let me know If you have any question before awarding the project. timeline is fixed 36 hours.

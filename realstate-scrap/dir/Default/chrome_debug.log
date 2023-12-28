@@ -1,0 +1,2 @@
+[1224/180048.595:INFO:CONSOLE(0)] "The Content-Security-Policy directive 'plugin-types' has been removed from the specification. If you want to block plugins, consider specifying "object-src 'none'" instead.", source: https://www.realestate.com.au/buy/in-nsw/list-1 (0)
+[1224/180048.605:INFO:CONSOLE(6)] "Uncaught ReferenceError: Notification is not defined", source:  (6)

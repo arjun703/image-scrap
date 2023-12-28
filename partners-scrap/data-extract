@@ -1,0 +1,21 @@
+source url = window..location
+
+partner name = h1 data-test-id="title" . innerText
+
+Products =span data-test-id="contact-detail-products-data . innerText
+
+partner type = all h2.class="contact-detail-titles , if its innerText contains Type , its next sibling div with class contact-detail-text and its span's innerText
+
+Supported Languages = span.data-test-id="contact-detail-languages-data.innertext
+
+Countries = span.data-test-id="contact-detail-country-data".innerText
+
+Sepcialization = p data-test-id="specializations-data" .innerText
+
+Website   = a.detail-links.aria-label="Partner website".href
+
+Email = a. aria-label="Partner email address" .href
+
+Phone Number = a.aria-label="Partner phone number" .href
+
+Address = a.aria-label="Partner address" .href
