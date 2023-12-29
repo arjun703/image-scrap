@@ -1,0 +1,121 @@
+I need all of the images in the following directories from https://usd.webshopmanager.com/admin?view=cms.file.list
+accounts
+design
+extdesc
+images
+InstCen
+instructions
+Instructions_Manuals
+PDF
+qa
+SALE
+Warranty
+
+(edited)
+[11:18 PM] login: searchalytics
+WaffleHouse4404!
+[11:20 PM] save them all here: https://drive.google.com/drive/folders/1x53DZuCdPKnPsl5MuOPwxpRv4xSeaWZJ?usp=drive_link
+
+function downloadImage(imgUrl, index) {
+    return new Promise(resolve => {
+        var link = document.createElement('a');
+        link.href = imgUrl;
+
+        // Extract the filename from the URL
+        var fileName = imgUrl.split('/').pop();
+
+        // Set the download attribute to the extracted filename
+        link.download = fileName;
+
+        // Append the link to the document
+        document.body.appendChild(link);
+
+        // Trigger the click event to start the download
+        link.click();
+
+        // Remove the link element from the document after a delay
+        setTimeout(() => {
+            document.body.removeChild(link);
+            resolve();
+        }, 500); // Adjust the delay as needed
+    });
+}
+
+async function downloadAllImages() {
+    var allImgsInThisPage = [];
+
+    Array.from(document.querySelectorAll('tbody.list tr')).forEach(tr => {
+        var viewImg = tr.querySelector('img[title="View"]');
+        if (viewImg) {
+            var closestAnchor = viewImg.closest('a');
+    
+            if (closestAnchor) {
+                var imgUrl = closestAnchor.getAttribute('href');
+                allImgsInThisPage.push(imgUrl);
+            }
+        }
+    });
+    console.log(allImgsInThisPage.length);
+
+    // Download all images sequentially using async/await and a for loop
+    for (let index = 0; index < allImgsInThisPage.length; index++) {
+        await downloadImage(allImgsInThisPage[index], index);
+    }
+}
+
+// Call the function to start downloading
+downloadAllImages();
+
+
+
+
+
+function downloadImage(imgUrl, index) {
+    return new Promise(resolve => {
+        var link = document.createElement('a');
+        link.href = imgUrl;
+
+        // Extract the filename from the URL
+        var fileName = imgUrl.split('/').pop();
+
+        // Set the download attribute to the extracted filename
+        link.download = fileName;
+
+        // Append the link to the document
+        document.body.appendChild(link);
+
+        // Trigger the click event to start the download
+        link.click();
+
+        // Remove the link element from the document after a delay
+        setTimeout(() => {
+            document.body.removeChild(link);
+            resolve();
+        }, 500); // Adjust the delay as needed
+    });
+}
+
+async function downloadAllImages() {
+    var allImgsInThisPage = [];
+
+    Array.from(document.querySelectorAll('tbody.list tr')).forEach(tr => {
+        var viewImg = tr.querySelector('img[title="View"]');
+        if (viewImg) {
+            var closestAnchor = viewImg.closest('a');
+    
+            if (closestAnchor) {
+                var imgUrl = closestAnchor.getAttribute('href');
+                allImgsInThisPage.push(imgUrl);
+            }
+        }
+    });
+    console.log(allImgsInThisPage.length);
+
+    // Download all images sequentially using async/await and a for loop
+    for (let index = 0; index < allImgsInThisPage.length; index++) {
+        await downloadImage(allImgsInThisPage[index], index);
+    }
+}
+
+// Call the function to start downloading
+downloadAllImages();
